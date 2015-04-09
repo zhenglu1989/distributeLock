@@ -73,7 +73,7 @@ public class DistributedLock {
             });
 
         latch.await();
-
+      // 子节点的类型设置为EPHEMERAL_SEQUENTIAL, 表明这是一个临时节点, 且在子节点的名称后面加上一串数字后缀
        currentPath = zooKeeper.create("/" + groupNode + "/" + subNode,null, Ids.OPEN_ACL_UNSAFE,
                CreateMode.EPHEMERAL_SEQUENTIAL);
 
