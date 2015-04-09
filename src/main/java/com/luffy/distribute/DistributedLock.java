@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.apache.zookeeper.*;
 import org.apache.zookeeper.ZooDefs.Ids;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
@@ -25,9 +26,9 @@ public class DistributedLock {
 
     private ZooKeeper zooKeeper;
 
-    private String currentPath;
+    private volatile String currentPath;
 
-    private String waitPath;
+    private volatile String waitPath;
 
     private CountDownLatch latch  = new CountDownLatch(1);
 
@@ -42,8 +43,25 @@ public class DistributedLock {
                           latch.countDown();
                         }
 
+                         //如果发生了waitpath的删除事件
                         if(watchedEvent.getType() == Event.EventType.NodeDeleted && watchedEvent.getPath().equals(waitPath)){
-                            exe();
+//                            exe();
+                            //确认thispath 是否真的是列表中最小的节点
+                            List<String> childNode = zooKeeper.getChildren("/" + groupNode,false);
+                            String thisNode = currentPath.substring(("/" + groupNode + "/").length());
+                            Collections.sort(childNode);
+                            int index = childNode.indexOf(thisNode);
+                            if(index == 0){
+                                exe();
+                            }else {
+                                //异常原因
+                                waitPath = "/" + groupNode + "/" + childNode.get(index -1);
+                                if(zooKeeper.exists(waitPath,true) == null ){
+                                    exe();
+                                }
+
+                            }
+
                         }
 
 
@@ -85,6 +103,25 @@ public class DistributedLock {
            zooKeeper.delete(this.currentPath,-1);
 
         }
+    }
+
+    public static void main(String[] args){
+//        System.out.println("hellosdlfjdsfljsdlfjdsfsd".substring(("/" + "grouplock" + "/").length()));
+
+       for(int i = 0;i < 10 ;i++){
+           new Thread(){
+               @Override
+               public void run() {
+                   try {
+                       DistributedLock lock = new DistributedLock();
+                       lock.connectZookeeper();
+
+                   }catch (Exception e){
+                       logger.error("跑main函数出错啦。。");
+                   }
+               }
+           }.start();
+       }
     }
 
 
