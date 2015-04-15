@@ -132,7 +132,17 @@ public class DynamicPropertiesHelper {
     public Enumeration<String> getPropertyKey(){
         return properties.keys();
     }
-    // 解惑
+
+    /**
+     *   properitesList.putIfAbsent 等同于
+     *
+     *  if(!map.containsKey(key))
+     *    return map.put(key,value);
+     *  else
+     *    return map.get(key)
+     * @param key
+     * @param listener
+     */
     public void registerListener(String key,PropertiesChangedListener listener){
         List<PropertiesChangedListener> listeners = new ArrayList<PropertiesChangedListener>();
         List<PropertiesChangedListener> old =  properitesList.putIfAbsent(key,listeners);
