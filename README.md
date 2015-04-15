@@ -1,3 +1,4 @@
-#分布式锁
+#分布式锁和配置管理中心的实现
 ##原理
-利用zookeeper，创建一个sequence类型的子节点，采用zookeeper的全局有序的特性来实现
+distributelock包下实现了分布式锁，利用zookeeper，创建一个sequence类型的子节点，采用zookeeper的全局有序的特性来实现
+configmanager目录下实现了配置管理中心，动态实现了配置管理中心，采用zookeeper
