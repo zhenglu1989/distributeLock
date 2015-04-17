@@ -2,6 +2,7 @@ package com.luffy.configmanager;
 
 import com.luffy.until.ZkUtils;
 import org.I0Itec.zkclient.ZkClient;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
 import java.io.*;
@@ -58,9 +59,34 @@ public class PropertyPublisher {
            }
            String name = conf.getName();
            String path = ZkUtils.getZkPath(rootNode,name);
+           ZkUtils.mkPaths(client,path);
+           String content;
+           try{
+               content = FileUtils.readFileToString(conf,"utf-8");
 
+           }catch (Exception e){
+               System.out.println("错误:读取文件内容遇到异常:" + e.getMessage());
+               failed++;
+               continue;
+           }
+           if(!client.exists(path)){
+               try{
+                   client.createPersistent(path);
+                   client.writeData(path,content);
+
+               }catch (Exception e){
+                   System.out.println("错误:尝试发布配置失败 :: " + e.getMessage());
+                   failed++;
+                   continue;
+               }
+           }else {
+               client.writeData(path,content);
+               System.out.println("tips: 已经成功将配置文件内容更新到zk配置 ：path ：" + path);
+           }
+           success++;
        }
 
+     System.out.println("提示：完成配置发布成功，成功:" + success + "失败 ：" + failed);
    }
 
 }

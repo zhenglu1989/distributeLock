@@ -39,6 +39,10 @@ public class ZkUtils {
                if(logger.isDebugEnabled()){
                    logger.debug("trying to create zk node: " +currentPath);
                }
+                client.createPersistent(currentPath);
+                if(logger.isDebugEnabled()){
+                    logger.debug("zk node created successfully:: " + currentPath);
+                }
             }
         }
     }
