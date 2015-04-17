@@ -1,6 +1,7 @@
 package com.luffy.until;
 
 
+import org.I0Itec.zkclient.ZkClient;
 import org.apache.log4j.Logger;
 
 /**
@@ -26,6 +27,20 @@ public class ZkUtils {
     }
 
 
-//    public static void mkPaths()
+    public static void mkPaths(ZkClient client,String path){
+        String[] subs = path.split("\\/");
+        if(subs.length < 2){
+            return;
+        }
+        String currentPath = "";
+        for(int i = 0 ; i < subs.length;i++){
+            currentPath = currentPath + "/" + subs[i];
+            if(!client.exists(currentPath)){
+               if(logger.isDebugEnabled()){
+                   logger.debug("trying to create zk node: " +currentPath);
+               }
+            }
+        }
+    }
 
 }
