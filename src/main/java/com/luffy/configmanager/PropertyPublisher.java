@@ -18,11 +18,9 @@ public class PropertyPublisher {
 
     public static  String CONF_DIR = "conf";
 
-    public static  String CONF_ENCODING = "utf-8";
+    public static  String ENCODING = "utf-8";
 
     public static  String ZK_CONF_ROOTNODE ="/root/conf";
-
-    public static  String ZK_CONF_ENCODING = "utf-8";
 
     public static  int SESSION_TIMEOUT = 30000;
 
@@ -43,10 +41,9 @@ public class PropertyPublisher {
         }
         ZK_ADDRESS = properties.getProperty("ZK_ADDRESS");
         SESSION_TIMEOUT = Integer.parseInt(properties.getProperty("SESSION_TIMEOUT"));
-        ZK_CONF_ENCODING = properties.getProperty("ZK_CONF_ENCODING");
+        ENCODING = properties.getProperty("ENCODING");
         ZK_CONF_ROOTNODE = properties.getProperty("ZK_CONF_ROOTNODE");
         CONF_DIR = properties.getProperty("CONF_DIR");
-        CONF_ENCODING = properties.getProperty("CONF_ENCODING");
 
     }
    private static void publishConfigs(ZkClient client,String rootNode,File confDir){
