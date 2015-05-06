@@ -42,7 +42,6 @@ public class DistributedLock {
 
                           latch.countDown();
                         }
-
                          //如果发生了waitpath的删除事件
                         if(watchedEvent.getType() == Event.EventType.NodeDeleted && watchedEvent.getPath().equals(waitPath)){
 //                            exe();
@@ -112,6 +111,7 @@ public class DistributedLock {
            new Thread(){
                @Override
                public void run() {
+
                    try {
                        DistributedLock lock = new DistributedLock();
                        lock.connectZookeeper();

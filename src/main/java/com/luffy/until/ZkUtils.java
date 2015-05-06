@@ -5,6 +5,7 @@ import org.I0Itec.zkclient.ZkClient;
 import org.apache.log4j.Logger;
 
 /**
+ * zookeeper工具类
  * @author zhenglu
  * @since 15/4/15
  */
