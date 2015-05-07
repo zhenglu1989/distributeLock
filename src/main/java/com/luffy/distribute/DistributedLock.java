@@ -53,7 +53,7 @@ public class DistributedLock {
                             if(index == 0){
                                 exe();
                             }else {
-                                //异常原因
+                                //此时客户端需要找到比自己小的那个节点，然后对其调用exist()方法，同时注册事件监听
                                 waitPath = "/" + groupNode + "/" + childNode.get(index -1);
                                 if(zooKeeper.exists(waitPath,true) == null ){
                                     exe();
