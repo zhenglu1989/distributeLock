@@ -59,15 +59,15 @@ public class ZkConfigSaver {
 
     }
 
-    public static void main(String[] args){
-
-        System.out.println("hello!");
-        String downloadPath = "/Users/zhenglu/Downloads";
-        loadProperties();
-        ZkClient client = new ZkClient(ZK_ADDRESS,ZK_TIMEOUT);
-        client.setZkSerializer(new BytesPushThroughSerializer());
-        File file = new File(downloadPath);
-        file.mkdirs();
-        save(client,ZK_ROOTNODE,file);
-    }
+//    public static void main(String[] args){
+//
+//        System.out.println("hello!");
+//        String downloadPath = "/Users/zhenglu/Downloads";
+//        loadProperties();
+//        ZkClient client = new ZkClient(ZK_ADDRESS,ZK_TIMEOUT);
+//        client.setZkSerializer(new BytesPushThroughSerializer());
+//        File file = new File(downloadPath);
+//        file.mkdirs();
+//        save(client,ZK_ROOTNODE,file);
+//    }
 }
